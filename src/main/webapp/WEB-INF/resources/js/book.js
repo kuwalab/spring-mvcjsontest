@@ -7,6 +7,7 @@ JST['tr'] = _.template(
   '<th><input type="button" value="更新" name="update"><input type="button" value="削除" name="delete"></th>' +
   '</tr>'
 );
+
 var $tbody = $('tbody');
 var getBookList = function() {
   $.ajax({
