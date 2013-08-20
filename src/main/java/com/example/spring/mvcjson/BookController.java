@@ -45,10 +45,11 @@ public class BookController {
 	@RequestMapping(value = "/books/{bookId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE
 			+ ";charset=utf-8")
 	@ResponseBody
-	public Book update(@PathVariable String bookId, @RequestBody Book book) {
+	public Book update(@PathVariable("bookId") String initBookId,
+			@RequestBody Book book) {
 		for (int i = 0; i < bookList.size(); i++) {
 			Book currentBook = bookList.get(i);
-			if (currentBook.getBookId().equals(bookId)) {
+			if (currentBook.getBookId().equals(initBookId)) {
 				currentBook.setBookId(book.getBookId());
 				currentBook.setBookName(book.getBookName());
 				currentBook.setPrice(book.getPrice());

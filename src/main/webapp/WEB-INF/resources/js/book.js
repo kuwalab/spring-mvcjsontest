@@ -1,7 +1,10 @@
 var JST = {};
 JST['tr'] = _.template(
   '<tr>' +
-  '<th><input type="text" size="3" placeholder="id" name="bookId" value="<%- bookId %>"></th>' +
+  '<th>' +
+   '<input type="hidden" name="initBookId" value="<%- bookId %>">' +
+   '<input type="text" size="3" placeholder="id" name="bookId" value="<%- bookId %>">' +
+  '</th>' +
   '<th><input type="text" size="20" placeholder="書名" name="bookName" value="<%- bookName %>"></th>' +
   '<th><input type="text" size="5" placeholder="価格" name="price" value="<%- price %>"></th>' +
   '<th><input type="button" value="更新" name="update"><input type="button" value="削除" name="delete"></th>' +
@@ -27,13 +30,14 @@ var getBookList = function() {
         bookName: $tr.find('input[name="bookName"]').val(),
         price: $tr.find('input[name="price"]').val()
       };
+      
+      var initBookId = $tr.find('input[name="initBookId"]').val();
   
-      var bookId = $(this).parents('tr').find('input[name="bookId"]').val();
       $.ajax({
         method: 'put',
         contentType: 'application/json;charset=utf-8',
         data: JSON.stringify(sendData),
-        url: 'books/' + bookId,
+        url: 'books/' + initBookId,
         dataType: 'json'
       }).done(function(data) {
         getBookList();
@@ -42,7 +46,7 @@ var getBookList = function() {
       });
     });
     $('input[name="delete"]').on('click', function() {
-      var bookId = $(this).parents('tr').find('input[name="bookId"]').val();
+      var bookId = $(this).parents('tr').find('input[name="initBookId"]').val();
       $.ajax({
         method: 'delete',
         url: 'books/' + bookId,
