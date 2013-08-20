@@ -12,6 +12,8 @@ JST['tr'] = _.template(
 );
 
 var $tbody = $('tbody');
+
+// 登録済みの一覧を読み直す
 var getBookList = function() {
   $.ajax({
     method: 'get',
@@ -23,7 +25,9 @@ var getBookList = function() {
     for (i = 0; i < data.length; i++) {
       $tbody.append(JST['tr'](data[i]));
     }
-    $('input[name="update"]').on('click', function() {
+
+    // 行ごとの更新ボタンの処理
+    $('table').on('click', 'input[name="update"]', function() {
       var $tr = $(this).parents('tr');
       var sendData = {
         bookId: $tr.find('input[name="bookId"]').val(),
@@ -41,11 +45,13 @@ var getBookList = function() {
         dataType: 'json'
       }).done(function(data) {
         getBookList();
-      }).fail(function() {
-        console.log('fail');
+      }).fail(function(jqXHR, textStatus, errorThrown) {
+        console.log(textStatus);
       });
     });
-    $('input[name="delete"]').on('click', function() {
+
+    // 行ごとのdeleteボタンの処理
+    $('table').on('click', 'input[name="delete"]', function() {
       var bookId = $(this).parents('tr').find('input[name="initBookId"]').val();
       $.ajax({
         method: 'delete',
@@ -53,12 +59,12 @@ var getBookList = function() {
         dataType: 'json'
       }).done(function(data) {
         getBookList();
-      }).fail(function() {
-        console.log('fail');
+      }).fail(function(jqXHR, textStatus, errorThrown) {
+       console.log(textStatus);
       });
     });
-  }).fail(function() {
-    console.log('fail');
+  }).fail(function(jqXHR, textStatus, errorThrown) {
+    console.log(textStatus);
   });
 };
 
@@ -78,9 +84,12 @@ $('#insert').on('click', function() {
     url: 'books',
     dataType: 'json'
   }).done(function(data) {
-    console.log(data);
-  }).fail(function() {
-    console.log('fail');
+      $('#insBookId').val('');
+      $('#insBookName').val('');
+      $('#insPrice').val('');
+    getBookList();
+  }).fail(function(jqXHR, textStatus, errorThrown) {
+    console.log(textStatus);
   });
 });
 

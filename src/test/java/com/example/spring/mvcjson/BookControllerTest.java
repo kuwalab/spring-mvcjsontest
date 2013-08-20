@@ -71,10 +71,6 @@ public class BookControllerTest {
 		// 削除されているか確認
 		mockMvc.perform(get("/books", "json"))
 				.andExpect(jsonPath("$").isArray())
-				.andExpect(jsonPath("$", hasSize(3)))
-				.andExpect(jsonPath("$[0].bookId").value("1"))
-				.andExpect(jsonPath("$[0].bookName").value("よくわかるSpring"))
-				.andExpect(jsonPath("$[0].price").value(3000));
-
+				.andExpect(jsonPath("$", hasSize(3)));
 	}
 }
