@@ -92,4 +92,3 @@ $('#insert').on('click', function() {
     console.log(textStatus);
   });
 });
-
