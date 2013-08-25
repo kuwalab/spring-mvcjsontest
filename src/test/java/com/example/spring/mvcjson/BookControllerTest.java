@@ -35,8 +35,7 @@ public class BookControllerTest {
 	/* JSONPath http://goessner.net/articles/JsonPath/ */
 	@Test
 	public void slash_booksのGET() throws Exception {
-		mockMvc.perform(get("/books", "json"))
-				.andExpect(jsonPath("$").isArray())
+		mockMvc.perform(get("/books")).andExpect(jsonPath("$").isArray())
 				.andExpect(jsonPath("$", hasSize(3)))
 				.andExpect(jsonPath("$[0].bookId").value("1"))
 				.andExpect(jsonPath("$[0].bookName").value("よくわかるSpring"))
@@ -50,15 +49,14 @@ public class BookControllerTest {
 		String jsonStr = mapper.writerWithDefaultPrettyPrinter()
 				.writeValueAsString(book);
 		mockMvc.perform(
-				post("/books", "json").contentType(MediaType.APPLICATION_JSON)
-						.content(jsonStr.getBytes()))
+				post("/books").contentType(MediaType.APPLICATION_JSON).content(
+						jsonStr.getBytes()))
 				.andExpect(jsonPath("$.bookId").value(book.getBookId()))
 				.andExpect(jsonPath("$.bookName").value(book.getBookName()))
 				.andExpect(jsonPath("$.price").value(book.getPrice()));
 
 		// 追加されているか確認
-		mockMvc.perform(get("/books", "json"))
-				.andExpect(jsonPath("$").isArray())
+		mockMvc.perform(get("/books")).andExpect(jsonPath("$").isArray())
 				.andExpect(jsonPath("$", hasSize(4)))
 				.andExpect(jsonPath("$[3].bookId").value(book.getBookId()))
 				.andExpect(jsonPath("$[3].bookName").value(book.getBookName()))
@@ -68,8 +66,7 @@ public class BookControllerTest {
 		mockMvc.perform(delete("/books/" + book.getBookId(), "json"));
 
 		// 削除されているか確認
-		mockMvc.perform(get("/books", "json"))
-				.andExpect(jsonPath("$").isArray())
+		mockMvc.perform(get("/books")).andExpect(jsonPath("$").isArray())
 				.andExpect(jsonPath("$", hasSize(3)));
 	}
 
@@ -80,15 +77,14 @@ public class BookControllerTest {
 		String jsonStr = mapper.writerWithDefaultPrettyPrinter()
 				.writeValueAsString(book);
 		mockMvc.perform(
-				put("/books/2", "json").contentType(MediaType.APPLICATION_JSON)
+				put("/books/2").contentType(MediaType.APPLICATION_JSON)
 						.content(jsonStr.getBytes()))
 				.andExpect(jsonPath("$.bookId").value(book.getBookId()))
 				.andExpect(jsonPath("$.bookName").value(book.getBookName()))
 				.andExpect(jsonPath("$.price").value(book.getPrice()));
 
 		// 変更されているか確認
-		mockMvc.perform(get("/books", "json"))
-				.andExpect(jsonPath("$").isArray())
+		mockMvc.perform(get("/books")).andExpect(jsonPath("$").isArray())
 				.andExpect(jsonPath("$", hasSize(3)))
 				.andExpect(jsonPath("$[1].bookId").value(book.getBookId()))
 				.andExpect(jsonPath("$[1].bookName").value(book.getBookName()))
@@ -99,7 +95,7 @@ public class BookControllerTest {
 		jsonStr = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
 				book);
 		mockMvc.perform(
-				put("/books/5", "json").contentType(MediaType.APPLICATION_JSON)
+				put("/books/5").contentType(MediaType.APPLICATION_JSON)
 						.content(jsonStr.getBytes()))
 				.andExpect(jsonPath("$.bookId").value(book.getBookId()))
 				.andExpect(jsonPath("$.bookName").value(book.getBookName()))
